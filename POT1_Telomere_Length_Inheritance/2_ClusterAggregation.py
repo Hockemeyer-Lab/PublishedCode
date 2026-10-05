@@ -190,9 +190,9 @@ def get_aggregation_stats(input_df,sample_key,save_prefix,l_ratio):
 ###################################### Parameters to Change ##########################################################################################################
 LEV_THRESHOLD = 0.85
 
-output_dir = Path("/data/annika/Nanopore/Telogator2/POT1Analysis/SecondRoundSeq/UpdatedMergedFastq/TelogatorAnalysis/CustomThresholdOuts")
-patient_key = pd.read_excel('/data/annika/Nanopore/Telogator2/POT1Analysis/SecondRoundSeq/PatientKey.xlsx')
-analysis_dir = output_dir.parent / 'AnalysisAndFiguresNoCollapse'
+output_dir = Path("/path/to/TelogatorOutputs")
+patient_key = pd.read_excel('/path/to/PatientKey.xlsx')
+analysis_dir = output_dir.parent / 'AnalysisAndFigures'
 if not os.path.isdir(analysis_dir):
     os.mkdir(analysis_dir) 
 
@@ -200,7 +200,7 @@ rerun_status = True
 ################################################################################################################################################
 
 #Start by reading in and processing all of the tsvs
-all_files = [x for x in os.listdir(output_dir) if "TB-" in x]
+all_files = [x for x in os.listdir(output_dir) if "-" in x] # change as need be to filter for Telogator2 outputs. Ensure no other outputs in output_dir that doesnt belong in PatientKey.xlsx
 print(f'Using a Levenshtein ratio threshold of {LEV_THRESHOLD}...\n')
 agg_order = [patient_key[patient_key['Sample']==x]['AggregationOrder'].item() for x in all_files]
 sorted_pairs = sorted(zip(agg_order, all_files))
@@ -294,3 +294,4 @@ print(f'Average number of alleles detected per sample: {round(family_df.Total.me
 print(f'Total alleles shared by non-family members: {alleles_cross_aligned} ({pct_cross_aligned}%)')
 print(f'Average proband correlation: {round(proband_df['%Aggregated'].mean(),2)}%')
 
+# The KeyError for 'Aggregation' stats is expected as the number of families is 1. WIll not affect 3_MakePlots and 4a/b steps

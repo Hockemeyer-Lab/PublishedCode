@@ -161,7 +161,7 @@ def make_rank_ordered_barplot(dataframe,name,average_string,color_order,plot_pal
                               overlay_parental=False):
     stripplot_df = pd.concat(dataframe.apply(lambda x: get_stripplot_data(x),axis=1).tolist())
     fig,ax = plt.subplots(figsize = (21,7))
-    sample_id = unique([x.split('_')[0] for x in dataframe.columns if '-0' in x])[0]
+    sample_id = unique([x.split('_')[0] for x in dataframe.columns if '-' in x])[0] # Keeps column names containing '-' then extracts the text before the first '_' from each
     
     if overlay_parental:
         save_prefix = f'{sample_id}_Rank_Ordered_{average_string}_TL_Parental'
